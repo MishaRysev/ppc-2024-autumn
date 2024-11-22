@@ -47,7 +47,6 @@ TEST(rysev_m_count_of_sent_mpi, simple_test) {
     counter1.run();
     counter1.post_processing();
 
-
     //compare
     ASSERT_EQ(par_out[0], seq_out[0]);
   }
@@ -92,7 +91,6 @@ TEST(rysev_m_count_of_sent_mpi, emty_string) {
     counter1.pre_processing();
     counter1.run();
     counter1.post_processing();
-
 
     // compare
     ASSERT_EQ(par_out[0], seq_out[0]);
@@ -139,7 +137,6 @@ TEST(rysev_m_count_of_sent_mpi, text_without_end_symbol) {
     counter1.run();
     counter1.post_processing();
 
-
     // compare
     ASSERT_EQ(par_out[0], seq_out[0]);
   }
@@ -185,7 +182,6 @@ TEST(rysev_m_count_of_sent_mpi, text_with_double_or_more_end_symbols) {
     counter1.run();
     counter1.post_processing();
 
-
     // compare
     ASSERT_EQ(par_out[0], seq_out[0]);
   }
@@ -230,7 +226,6 @@ TEST(rysev_m_count_of_sent_mpi, sample_test_number_two) {
     counter1.pre_processing();
     counter1.run();
     counter1.post_processing();
-
 
     // compare
     ASSERT_EQ(par_out[0], seq_out[0]);

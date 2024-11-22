@@ -18,4 +18,4 @@ class SentCountSequential : public ppc::core::Task {
   std::string input_;
   int count;
 };
-}
+}  // namespace rysev_m_count_of_sent_seq

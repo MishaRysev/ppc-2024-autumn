@@ -1,6 +1,7 @@
 // Copyright 2023 Nesterov Alexander
 
 #include "mpi/rysev_m_count_of_sent/include/ops_mpi.hpp"
+
 #include <algorithm>
 #include <functional>
 #include <random>
