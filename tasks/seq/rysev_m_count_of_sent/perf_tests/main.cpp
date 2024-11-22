@@ -61,7 +61,7 @@ TEST(rysev_m_count_of_sent_seq, test_task_run) {
 
   auto testSeqTask = std::make_shared<rysev_m_count_of_sent_seq::SentCountSequential>(taskDataSeq);
 
-  // Create Perf attributesû
+  // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
   const auto t0 = std::chrono::high_resolution_clock::now();
