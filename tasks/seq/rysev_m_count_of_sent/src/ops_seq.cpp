@@ -17,7 +17,8 @@ bool rysev_m_count_of_sent_seq::SentCountSequential::run() {
   internal_order_test();
   char last_symbol = ' ';
   for (char symbol : input_) {
-    if ((symbol == '.' || symbol == '!' || symbol == '?') && last_symbol != '.' && last_symbol != '!' && last_symbol != '?') {
+    if ((symbol == '.' || symbol == '!' || symbol == '?') && last_symbol != '.' && last_symbol != '!' &&
+        last_symbol != '?') {
       count += 1;
     }
     last_symbol = symbol;
