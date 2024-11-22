@@ -14,6 +14,7 @@ class SentCountSequential : public ppc::core::Task {
   bool validation() override;
   bool run() override;
   bool post_processing() override;
+
  private:
   std::string input_;
   int count;
