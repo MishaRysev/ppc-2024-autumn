@@ -1,9 +1,10 @@
 // Copyright 2023 Nesterov Alexander
 #pragma once
 
+#include <gtest/gtest.h>
+
 #include <boost/mpi/collectives.hpp>
 #include <boost/mpi/communicator.hpp>
-#include <gtest/gtest.h>
 #include <memory>
 #include <numeric>
 #include <string>
@@ -43,4 +44,4 @@ class CountOfSentParallel : public ppc::core::Task {
 };
 
 int CountOfSent(std::string& str, bool is_last = true);
-} 
+}  // namespace rysev_m_count_of_sent_mpi

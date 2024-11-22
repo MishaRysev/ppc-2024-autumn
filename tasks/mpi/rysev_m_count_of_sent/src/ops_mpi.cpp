@@ -1,21 +1,22 @@
 // Copyright 2023 Nesterov Alexander
 
+#include "mpi/rysev_m_count_of_sent/include/ops_mpi.hpp"
 #include <algorithm>
 #include <functional>
 #include <random>
 #include <string>
 #include <thread>
 #include <vector>
-
-#include "mpi/rysev_m_count_of_sent/include/ops_mpi.hpp"
-
 using namespace std::chrono_literals;
 
 int rysev_m_count_of_sent_mpi::CountOfSent(std::string& str, bool is_last) {
   char last_symbol = ' ';
   int count = 0;
   for (char symbol : str) {
-    if ((symbol == '.' || symbol == '!' || symbol == '?') && last_symbol != '.' && last_symbol != '!' && last_symbol != '?') count += 1;
+    if ((symbol == '.' || symbol == '!' || symbol == '?') && last_symbol != '.' && last_symbol != '!' &&
+        last_symbol != '?') {
+      count += 1;
+    }
     last_symbol = symbol;
   }
   if (str.back() != '.' && str.back() != '!' && str.back() != '?' && !str.empty() && is_last) {

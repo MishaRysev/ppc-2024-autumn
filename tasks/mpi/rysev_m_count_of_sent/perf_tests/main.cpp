@@ -1,8 +1,7 @@
 // Copyright 2023 Nesterov Alexander
-
+#include <gtest/gtest.h>
 
 #include <boost/mpi/timer.hpp>
-#include <gtest/gtest.h>
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
@@ -10,6 +9,7 @@
 
 TEST(rysev_m_count_of_sent_mpi, test_pipeline_run) {
   boost::mpi::communicator world;
+
 
   //create data
   std::string str = "Have I told you what madness is?";
