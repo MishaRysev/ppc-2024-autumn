@@ -82,7 +82,7 @@ bool rysev_m_count_of_sent_mpi::CountOfSentParallel::run() {
 
   if (world.rank() == 0) {
     for (int proc = 1; proc < (world.size()); proc++) {
-      world.send(proc, 0, input_.data() + r + proc * d, d);
+      world.send(proc, 0, input_.data() + r + (proc - 1) * d, d);
     }
     l_data = std::string(input_.begin(), input_.begin() + r);
   } else {
@@ -91,7 +91,7 @@ bool rysev_m_count_of_sent_mpi::CountOfSentParallel::run() {
   }
 
   l_count = CountOfSent(l_data, world.rank() == world.size() - 1);
-  reduce(world, l_count, count, std::plus<>(), 0);
+  reduce(world, l_count, count, std::plus(), 0);
   return true;
 }
 
