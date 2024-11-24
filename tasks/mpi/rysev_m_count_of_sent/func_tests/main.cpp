@@ -14,17 +14,21 @@ TEST(rysev_m_count_of_sent_mpi, simple_test) {
   std::vector<int> par_out(1, 0);
 
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(str.data()));
-  taskDataPar->inputs_count.emplace_back(str.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_out.data()));
-  taskDataPar->outputs_count.emplace_back(par_out.size());
+  if (world.rank() == 0){
+    taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(str.data()));
+    taskDataPar->inputs_count.emplace_back(str.size());
+    taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_out.data()));
+    taskDataPar->outputs_count.emplace_back(par_out.size());
+  }
 
   rysev_m_count_of_sent_mpi::CountOfSentParallel counter(taskDataPar);
-  ASSERT_EQ(counter.validation(), true);
+  ASSERT_TRUE(counter.validation());
   counter.pre_processing();
   counter.run();
   counter.post_processing();
-  ASSERT_EQ(par_out[0], 1);
+  if (world.rank() == 0){
+    ASSERT_EQ(par_out[0], 1);
+  }
 
   if (world.rank() == 0) {
     std::vector<int> seq_out(1, 0);
@@ -52,17 +56,20 @@ TEST(rysev_m_count_of_sent_mpi, emty_string) {
   std::vector<int> par_out(1, 0);
 
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(str.data()));
-  taskDataPar->inputs_count.emplace_back(str.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_out.data()));
-  taskDataPar->outputs_count.emplace_back(par_out.size());
-
+  if (world.rank() == 0){
+    taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(str.data()));
+    taskDataPar->inputs_count.emplace_back(str.size());
+    taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_out.data()));
+    taskDataPar->outputs_count.emplace_back(par_out.size());
+  }
   rysev_m_count_of_sent_mpi::CountOfSentParallel counter(taskDataPar);
-  ASSERT_EQ(counter.validation(), true);
+  ASSERT_TRUE(counter.validation());
   counter.pre_processing();
   counter.run();
   counter.post_processing();
-  ASSERT_EQ(par_out[0], 0);
+  if (worls.rank() == 0){
+    ASSERT_EQ(par_out[0], 0);
+  }
 
   if (world.rank() == 0) {
     std::vector<int> seq_out(1, 0);
@@ -90,18 +97,20 @@ TEST(rysev_m_count_of_sent_mpi, text_without_end_symbol) {
   std::vector<int> par_out(1, 0);
 
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(str.data()));
-  taskDataPar->inputs_count.emplace_back(str.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_out.data()));
-  taskDataPar->outputs_count.emplace_back(par_out.size());
-
+  if (world.rank() == 0){
+    taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(str.data()));
+    taskDataPar->inputs_count.emplace_back(str.size());
+    taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_out.data()));
+    taskDataPar->outputs_count.emplace_back(par_out.size());
+  }
   rysev_m_count_of_sent_mpi::CountOfSentParallel counter(taskDataPar);
-  ASSERT_EQ(counter.validation(), true);
+  ASSERT_TRUE(counter.validation());
   counter.pre_processing();
   counter.run();
   counter.post_processing();
-  ASSERT_EQ(par_out[0], 1);
-
+  if (world.rank() == 0){
+    ASSERT_EQ(par_out[0], 1);
+  }
   if (world.rank() == 0) {
     std::vector<int> seq_out(1, 0);
 
@@ -128,17 +137,20 @@ TEST(rysev_m_count_of_sent_mpi, text_with_double_or_more_end_symbols) {
   std::vector<int> par_out(1, 0);
 
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(str.data()));
-  taskDataPar->inputs_count.emplace_back(str.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_out.data()));
-  taskDataPar->outputs_count.emplace_back(par_out.size());
-
+  if (world.rank() == 0){
+    taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(str.data()));
+    taskDataPar->inputs_count.emplace_back(str.size());
+    taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_out.data()));
+    taskDataPar->outputs_count.emplace_back(par_out.size());
+  }
   rysev_m_count_of_sent_mpi::CountOfSentParallel counter(taskDataPar);
-  ASSERT_EQ(counter.validation(), true);
+  ASSERT_TRUE(counter.validation());
   counter.pre_processing();
   counter.run();
   counter.post_processing();
-  ASSERT_EQ(par_out[0], 2);
+  if (world.rank() == 0){
+    ASSERT_EQ(par_out[0], 2);
+  }
 
   if (world.rank() == 0) {
     std::vector<int> seq_out(1, 0);
@@ -166,18 +178,21 @@ TEST(rysev_m_count_of_sent_mpi, sample_test_number_two) {
   std::vector<int> par_out(1, 0);
 
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(str.data()));
-  taskDataPar->inputs_count.emplace_back(str.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_out.data()));
-  taskDataPar->outputs_count.emplace_back(par_out.size());
-
+  if (world.rank() == 0){
+    taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(str.data()));
+    taskDataPar->inputs_count.emplace_back(str.size());
+    taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_out.data()));
+    taskDataPar->outputs_count.emplace_back(par_out.size());
+  }
   rysev_m_count_of_sent_mpi::CountOfSentParallel counter(taskDataPar);
-  ASSERT_EQ(counter.validation(), true);
+  ASSERT_TRUE(counter.validation());
   counter.pre_processing();
   counter.run();
   counter.post_processing();
-  ASSERT_EQ(par_out[0], 4);
-
+  if (world.rank() == 0){
+    ASSERT_EQ(par_out[0], 4);
+  }
+  
   if (world.rank() == 0) {
     std::vector<int> seq_out(1, 0);
 
