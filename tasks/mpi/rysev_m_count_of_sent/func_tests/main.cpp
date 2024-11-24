@@ -12,7 +12,7 @@ TEST(rysev_m_count_of_sent_mpi, simple_test) {
   std::string str = "The cake is a lie.";
   std::vector<int> par_out(1, 0);
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-  if (world.rank() == 0){
+  if (world.rank() == 0) {
     taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(str.data()));
     taskDataPar->inputs_count.emplace_back(str.size());
     taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_out.data()));
@@ -23,7 +23,7 @@ TEST(rysev_m_count_of_sent_mpi, simple_test) {
   counter.pre_processing();
   counter.run();
   counter.post_processing();
-  if (world.rank() == 0){
+  if (world.rank() == 0) {
     ASSERT_EQ(par_out[0], 1);
   }
   if (world.rank() == 0) {
@@ -47,7 +47,7 @@ TEST(rysev_m_count_of_sent_mpi, emty_string) {
   std::string str = "";
   std::vector<int> par_out(1, 0);
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-  if (world.rank() == 0){
+  if (world.rank() == 0) {
     taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(str.data()));
     taskDataPar->inputs_count.emplace_back(str.size());
     taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_out.data()));
@@ -58,7 +58,7 @@ TEST(rysev_m_count_of_sent_mpi, emty_string) {
   counter.pre_processing();
   counter.run();
   counter.post_processing();
-  if (worls.rank() == 0){
+  if (worls.rank() == 0) {
     ASSERT_EQ(par_out[0], 0);
   }
   if (world.rank() == 0) {
@@ -83,7 +83,7 @@ TEST(rysev_m_count_of_sent_mpi, text_without_end_symbol) {
   std::string str = "Bring me a bucket, and I'll show you a bucket";
   std::vector<int> par_out(1, 0);
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-  if (world.rank() == 0){
+  if (world.rank() == 0) {
     taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(str.data()));
     taskDataPar->inputs_count.emplace_back(str.size());
     taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_out.data()));
@@ -94,7 +94,7 @@ TEST(rysev_m_count_of_sent_mpi, text_without_end_symbol) {
   counter.pre_processing();
   counter.run();
   counter.post_processing();
-  if (world.rank() == 0){
+  if (world.rank() == 0) {
     ASSERT_EQ(par_out[0], 1);
   }
   if (world.rank() == 0) {
@@ -118,7 +118,7 @@ TEST(rysev_m_count_of_sent_mpi, text_with_double_or_more_end_symbols) {
   std::string str = "Who will you choose: them or us?! Us or them?!!...";
   std::vector<int> par_out(1, 0);
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-  if (world.rank() == 0){
+  if (world.rank() == 0) {
     taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(str.data()));
     taskDataPar->inputs_count.emplace_back(str.size());
     taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_out.data()));
@@ -129,7 +129,7 @@ TEST(rysev_m_count_of_sent_mpi, text_with_double_or_more_end_symbols) {
   counter.pre_processing();
   counter.run();
   counter.post_processing();
-  if (world.rank() == 0){
+  if (world.rank() == 0) {
     ASSERT_EQ(par_out[0], 2);
   }
   if (world.rank() == 0) {
@@ -153,7 +153,7 @@ TEST(rysev_m_count_of_sent_mpi, sample_test_number_two) {
   std::string str = "wfwefwef. wewefwef? wrgaearg. aweaefawef!";
   std::vector<int> par_out(1, 0);
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-  if (world.rank() == 0){
+  if (world.rank() == 0) {
     taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(str.data()));
     taskDataPar->inputs_count.emplace_back(str.size());
     taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_out.data()));
@@ -164,7 +164,7 @@ TEST(rysev_m_count_of_sent_mpi, sample_test_number_two) {
   counter.pre_processing();
   counter.run();
   counter.post_processing();
-  if (world.rank() == 0){
+  if (world.rank() == 0) {
     ASSERT_EQ(par_out[0], 4);
   }
   if (world.rank() == 0) {
