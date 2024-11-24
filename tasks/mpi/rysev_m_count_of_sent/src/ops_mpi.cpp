@@ -21,8 +21,8 @@ int rysev_m_count_of_sent_mpi::CountOfSent(std::string& str, bool is_last) {
     last_symbol = symbol;
   }
   if (str.back() != '.' && str.back() != '!' && str.back() != '?' && !str.empty() && is_last) {
-    count += 1
-  };
+    count += 1;
+  }
   return count;
 }
 
