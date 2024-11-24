@@ -58,7 +58,7 @@ TEST(rysev_m_count_of_sent_mpi, emty_string) {
   counter.pre_processing();
   counter.run();
   counter.post_processing();
-  if (worls.rank() == 0) {
+  if (world.rank() == 0) {
     ASSERT_EQ(par_out[0], 0);
   }
   if (world.rank() == 0) {
