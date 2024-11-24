@@ -12,8 +12,8 @@ TEST(rysev_m_count_of_sent_mpi, test_pipeline_run) {
   std::string str = "Have I told you what madness is?";
   std::vector<int> out(1, 0);
   for (int i = 0; i < 100; i++) {
-    str.append("Have I told you what madness is?")
-  };
+    str.append("Have I told you what madness is?");
+  }
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(str.data()));
   taskDataPar->inputs_count.emplace_back(str.size());
