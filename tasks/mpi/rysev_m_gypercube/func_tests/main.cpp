@@ -10,8 +10,9 @@
 TEST(rysev_m_gypercube, data_transfer) {
   boost::mpi::communicator world;
 
-  if (world.size() == 1) ASSERT_TRUE(true); //пока что как временный костыль
-  else {
+  if (world.size() == 1) { 
+    ASSERT_TRUE(true); //пока что как временный костыль
+  } else {
     std::vector<uint8_t> in(10);
     std::vector<uint8_t> out(10);
     for (uint8_t i = 0; i < in.size(); i++) {
@@ -39,8 +40,9 @@ TEST(rysev_m_gypercube, data_transfer) {
 TEST(rysev_m_gypercube, more_than_expected_has_arrived) {
   boost::mpi::communicator world;
   
-  if (world.size() == 1) ASSERT_TRUE(true) //пока что как временный костыль
-  else {
+  if (world.size() == 1) {
+    ASSERT_TRUE(true); //пока что как временный костыль
+  } else {
     std::vector<uint8_t> in(15);
     std::vector<uint8_t> out(10);
     for (size_t i = 0; i < in.size(); i++) {
@@ -64,8 +66,9 @@ TEST(rysev_m_gypercube, more_than_expected_has_arrived) {
 TEST(rysev_m_gypercube, empty_data_transfer) {
   boost::mpi::communicator world;
   
-  if (world.size() == 1) ASSERT_TRUE(true);
-  else {
+  if (world.size() == 1) {
+    ASSERT_TRUE(true); // пока что временный костыль
+  } else {
     std::vector<uint8_t> in;
 
     std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
