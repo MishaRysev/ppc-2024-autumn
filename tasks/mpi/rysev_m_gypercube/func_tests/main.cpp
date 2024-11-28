@@ -54,3 +54,21 @@ TEST(rysev_m_gypercube, more_than_expected_has_arrived) {
   ASSERT_FALSE(task.run());
   task.post_processing();
 }
+
+TEST(rysev_m_gypercube, empty_data_transfer) {
+  boost::mpi::communicator world;
+
+  std::vector<uint8_t> in;
+
+  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
+  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  taskDataPar->inputs_count.emplace_back(in.size());
+  taskDataPar->outputs.emplace_back();
+  taskDataPar->outputs_count.emplace_back();
+
+  rysev_m_gypercube::GyperCube task(taskDataPar);
+  ASSERT_TRUE(task.validation());
+  task.pre_processing();
+  ASSERT_TRUE(task.run());
+  task.post_processing();
+}
