@@ -23,7 +23,8 @@ bool rysev_m_gypercube::GyperCube::validation() {
 
 bool rysev_m_gypercube::GyperCube::run() {
   internal_order_test();
-  for (int i = 0; i < std::log2(world.size()); i++){	  
+  for (int i = 0; i < std::log2(world.size()); i++) {
+
     int neighbr = world.rank() ^ (1 << i);
 	if (neighbr < world.size()) {
 	  std::vector<uint8_t> to_send(taskData->inputs_count[0]), to_recv(taskData->inputs_count[0]);
@@ -32,15 +33,15 @@ bool rysev_m_gypercube::GyperCube::run() {
 	  world.send(neighbr, 0, to_send);
 	  world.recv(neighbr, 0, to_recv);
 
-	  if (taskData->outputs_count[0] >= to_recv.size()) { 
-	    std::copy(to_recv.begin(), to_recv.begin() + to_recv.size(), taskData->outputs[0]); 
-	  } else { 
-	    return false; 
+	  if (taskData->outputs_count[0] >= to_recv.size()) {
+	    std::copy(to_recv.begin(), to_recv.begin() + to_recv.size(), taskData->outputs[0]);
+	  } else {
+	    return false;
 	  }
+
 	}
 	world.barrier();
   }
-
   return true;
 }
 

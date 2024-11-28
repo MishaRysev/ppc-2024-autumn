@@ -27,4 +27,4 @@ class GyperCube : public ppc::core::Task {
   boost::mpi::communicator world;
 };
 
-}  // rysev_m_gypercube
+}  // namespace rysev_m_gypercube
