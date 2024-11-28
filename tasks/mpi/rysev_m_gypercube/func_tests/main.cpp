@@ -33,7 +33,7 @@ TEST(rysev_m_gypercube, data_transfer) {
   }
 }
 
-TEST(t_rysev_m_gypercube, more_than_expected_has_arrived){
+TEST(rysev_m_gypercube, more_than_expected_has_arrived) {
   boost::mpi::communicator world;
 
   std::vector<uint8_t> in(15);
