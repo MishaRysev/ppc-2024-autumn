@@ -28,16 +28,19 @@ bool rysev_m_gypercube::GyperCube::run() {
 	if (neighbr < world.size()) {
 	  std::vector<uint8_t> to_send(taskData->inputs_count[0]), to_recv(taskData->inputs_count[0]);
 	  std::copy(taskData->inputs[0], taskData->inputs[0] + taskData->inputs_count[0], to_send.begin());
-	
+
 	  world.send(neighbr, 0, to_send);
 	  world.recv(neighbr, 0, to_recv);
 
-	  if (taskData->outputs_count[0] >= to_recv.size()) { std::copy(to_recv.begin(), to_recv.begin() + to_recv.size(), taskData->outputs[0]); }
-      else { return false; }
+	  if (taskData->outputs_count[0] >= to_recv.size()) { 
+	    std::copy(to_recv.begin(), to_recv.begin() + to_recv.size(), taskData->outputs[0]); 
+	  } else { 
+	    return false; 
+	  }
 	}
 	world.barrier();
   }
-  
+
   return true;
 }
 
