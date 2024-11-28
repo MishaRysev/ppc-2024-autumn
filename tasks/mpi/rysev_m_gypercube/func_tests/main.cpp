@@ -12,8 +12,8 @@ TEST(rysev_m_gypercube, data_transfer) {
 
   std::vector<uint8_t> in(10);
   std::vector<uint8_t> out(10);
-  for (uint8_t i = 0; i < in.size(); i++) { 
-    in[i] = i; 
+  for (uint8_t i = 0; i < in.size(); i++) {
+    in[i] = i;
   }
 
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
@@ -28,8 +28,8 @@ TEST(rysev_m_gypercube, data_transfer) {
   ASSERT_TRUE(task.run());
   task.post_processing();
 
-  for (uint8_t i = 0; i < out.size(); i++) { 
-    ASSERT_EQ(out[i], in[i]); 
+  for (uint8_t i = 0; i < out.size(); i++) {
+    ASSERT_EQ(out[i], in[i]);
   }
 }
 
@@ -38,8 +38,8 @@ TEST(t_rysev_m_gypercube, more_than_expected_has_arrived){
 
   std::vector<uint8_t> in(15);
   std::vector<uint8_t> out(10);
-  for (size_t i = 0; i < in.size(); i++) { 
-    in[i] = i; 
+  for (size_t i = 0; i < in.size(); i++) {
+    in[i] = i;
   }
 
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
