@@ -18,6 +18,7 @@ bool rysev_m_gypercube::GyperCube::pre_processing() {
 bool rysev_m_gypercube::GyperCube::validation() {
   internal_order_test();
   int size = world.size();
+  std::cout << size << "\n";
   if (size < 2 || (size & (size - 1)) != 0) return false;
   return true;
 }
