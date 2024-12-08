@@ -8,42 +8,85 @@
 #include <string>
 #include <thread>
 #include <vector>
+#include <typeinfo>
 using namespace std::chrono_literals;
+
+int rysev_m_gypercube::GyperCube::Next(int c_node, int _target) {
+  int d = c_node ^ _target;
+  for (int i = 0; i < std::log2(world.size()); i++) {
+    if ((d & (1 << i)) != 0) return c_node ^ (1 << i);
+  }
+  return c_node;
+}
 
 bool rysev_m_gypercube::GyperCube::pre_processing() {
   internal_order_test();
+  sender = *reinterpret_cast<int *>(taskData->inputs[0]);
+  target = *reinterpret_cast<int *>(taskData->inputs[1]);
+  if (world.rank() == sender) data = *reinterpret_cast<int *>(taskData->inputs[2]);
+  path.clear();
+  done = false;
   return true;
 }
 
 bool rysev_m_gypercube::GyperCube::validation() {
   internal_order_test();
-  int size = world.size();
-  if (size < 2 || (size & (size - 1)) != 0) return false;
+  if (world.rank() == 0) {
+    int size = world.size();
+    if (size < 2 || (size & (size - 1)) != 0) return false;
+    if (*reinterpret_cast<int *>(taskData->inputs[0]) >= size || *reinterpret_cast<int *>(taskData->inputs[0]) < 0) return false;
+  }
   return true;
 }
 
 bool rysev_m_gypercube::GyperCube::run() {
   internal_order_test();
-  for (int i = 0; i < std::log2(world.size()); i++) {
-    int neighbr = world.rank() ^ (1 << i);
-    if (neighbr < world.size()) {
-      std::vector<uint8_t> to_send(taskData->inputs_count[0]), to_recv(taskData->inputs_count[0]);
-      std::copy(taskData->inputs[0], taskData->inputs[0] + taskData->inputs_count[0], to_send.begin());
-      if (to_send.empty()) break;
-      world.send(neighbr, 0, to_send);
-      world.recv(neighbr, 0, to_recv);
-      if (taskData->outputs_count[0] >= to_recv.size()) {
-        std::copy(to_recv.begin(), to_recv.begin() + to_recv.size(), taskData->outputs[0]);
-      } else {
-        return false;
-      }
+  int size = world.size();
+  if (world.rank() == sender) {
+    path.push_back(world.rank());
+	if (world.rank() != target) {
+	  int next = Next(world.rank(), target);
+	  world.send(next, 0, done);
+	  world.send(next, 0, data);
+	  world.send(next, 0, path);
+	  world.recv(target, 0, path);
+	  world.recv(target, 0, done);
     }
-    world.barrier();
+	else return true;
+    for (int i = 0; i < size; i++) {
+      if (i != sender && std::find(path.begin(), path.end(), i) == path.end()) {
+	    world.send(i, 0, done);
+	  }
+	}
+  } else {
+	world.recv(boost::mpi::any_source, 0, done);
+    if (!done) {
+      world.recv(boost::mpi::any_source, 0, data);
+      world.recv(boost::mpi::any_source, 0, path);
+      path.push_back(world.rank());
+	  if (world.rank() == target) {
+		done = true;
+        world.send(sender, 0, path);
+		world.send(sender, 0, done);
+	  } else {
+        int next = Next(world.rank(), target);
+		world.send(next, 0, done);
+	    world.send(next, 0, data);
+	    world.send(next, 0, path);
+      }
+	}
   }
+  world.barrier();
   return true;
 }
 
 bool rysev_m_gypercube::GyperCube::post_processing() {
   internal_order_test();
+  if (world.rank() == target) {
+	*reinterpret_cast<int *>(taskData->outputs[0]) = data;
+	int* p = reinterpret_cast<int *>(taskData->outputs[1]);
+	std::copy(path.begin(), path.end(), p);
+  }
   return true;
 }
+
