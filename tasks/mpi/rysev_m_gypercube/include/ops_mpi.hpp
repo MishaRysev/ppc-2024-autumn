@@ -2,13 +2,13 @@
 #pragma once
 
 #include <gtest/gtest.h>
+#include <math.h>
 
 #include <algorithm>
 #include <boost/mpi/collectives.hpp>
 #include <boost/mpi/communicator.hpp>
 #include <boost/serialization/serialization.hpp>
 #include <boost/serialization/vector.hpp>
-#include <math.h>
 #include <memory>
 #include <numeric>
 #include <string>

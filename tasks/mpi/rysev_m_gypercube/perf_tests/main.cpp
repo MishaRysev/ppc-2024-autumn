@@ -56,7 +56,7 @@ TEST(rysev_m_gypercube, test_pipeline_run) {
   if (world.rank() == _sender) {
     std::vector<int> exp_path{0, 1};
     world.recv(_target, 0, out);
-    world.recv(_target, 0, out_path); 	
+    world.recv(_target, 0, out_path);
     ASSERT_EQ(_data, out);
     ppc::core::Perf::print_perf_statistic(perfResults);
   }
