@@ -18,7 +18,7 @@ TEST(rysev_m_gypercube, data_transfer_0_to_1) {
   int _sender = 0;
   int _target = 1;
   int out = -1;
-  std::vector<int> out_path(std::log2(world.size()) + 1, -1);
+  std::vector<int> out_path(log2(world.size()) + 1, -1);
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&_sender));
   taskDataPar->inputs_count.emplace_back(1);
@@ -66,7 +66,7 @@ TEST(rysev_m_gypercube, data_transfer_1_to_3) {
   int _sender = 1;
   int _target = 3;
   int out = -1;
-  std::vector<int> out_path(std::log2(world.size()) + 1, -1);
+  std::vector<int> out_path(log2(world.size()) + 1, -1);
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&_sender));
   taskDataPar->inputs_count.emplace_back(1);
@@ -114,7 +114,7 @@ TEST(rysev_m_gypercube, data_transfer_3_to_0) {
   int _sender = 3;
   int _target = 0;
   int out = -1;
-  std::vector<int> out_path(std::log2(world.size()) + 1, -1);
+  std::vector<int> out_path(log2(world.size()) + 1, -1);
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&_sender));
   taskDataPar->inputs_count.emplace_back(1);
@@ -138,7 +138,7 @@ TEST(rysev_m_gypercube, data_transfer_3_to_0) {
   world.barrier();
   
   if (world.rank() == _target) {
-    out_path.erase(std::remove(out_path.begin(), out_path.end(), -1), out_path.end());
+    out_path.erase(remove(out_path.begin(), out_path.end(), -1), out_path.end());
 	world.send(_sender, 0, out);
 	world.send(_sender, 0, out_path);
   }
@@ -162,7 +162,7 @@ TEST(rysev_m_gypercube, data_transfer_0_to_3) {
   int _sender = 0;
   int _target = 3;
   int out = -1;
-  std::vector<int> out_path(std::log2(world.size()) + 1, -1);
+  std::vector<int> out_path(log2(world.size()) + 1, -1);
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&_sender));
   taskDataPar->inputs_count.emplace_back(1);
@@ -202,7 +202,7 @@ TEST(rysev_m_gypercube, data_transfer_0_to_3) {
 TEST(rysev_m_gypercube, data_transfer_0_to_7) {
   boost::mpi::communicator world;
   
-  if (std::log2(world.size()) != 3) {
+  if (log2(world.size()) != 3) {
     GTEST_SKIP();
   }
   
@@ -210,7 +210,7 @@ TEST(rysev_m_gypercube, data_transfer_0_to_7) {
   int _sender = 0;
   int _target = 7;
   int out = -1;
-  std::vector<int> out_path(std::log2(world.size()) + 1, -1);
+  std::vector<int> out_path(log2(world.size()) + 1, -1);
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&_sender));
   taskDataPar->inputs_count.emplace_back(1);

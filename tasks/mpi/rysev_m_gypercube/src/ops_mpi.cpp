@@ -13,7 +13,7 @@ using namespace std::chrono_literals;
 
 int rysev_m_gypercube::GyperCube::Next(int c_node, int _target) {
   int d = c_node ^ _target;
-  for (int i = 0; i < std::log2(world.size()); i++) {
+  for (int i = 0; i < log2(world.size()); i++) {
     if ((d & (1 << i)) != 0) return c_node ^ (1 << i);
   }
   return c_node;
