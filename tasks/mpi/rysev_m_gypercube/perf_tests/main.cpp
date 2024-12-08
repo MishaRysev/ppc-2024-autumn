@@ -50,15 +50,15 @@ TEST(rysev_m_gypercube, test_pipeline_run) {
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
   if (world.rank() == _target) {
     out_path.erase(std::remove(out_path.begin(), out_path.end(), -1), out_path.end());
-	world.send(0, 0, out);
-	world.send(0, 0, out_path);
+    world.send(0, 0, out);
+    world.send(0, 0, out_path);
   }
   if (world.rank() == _sender) {
     std::vector<int> exp_path{0, 1};
-	world.recv(_target, 0, out);
-	world.recv(_target, 0, out_path);
-	ASSERT_EQ(_data, out);
-	ppc::core::Perf::print_perf_statistic(perfResults);
+    world.recv(_target, 0, out);
+    world.recv(_target, 0, out_path); 	
+    ASSERT_EQ(_data, out);
+    ppc::core::Perf::print_perf_statistic(perfResults);
   }
 }
 
@@ -105,14 +105,14 @@ TEST(rysev_m_gypercube, test_task_run) {
   perfAnalyzer->task_run(perfAttr, perfResults);
   if (world.rank() == _target) {
     out_path.erase(std::remove(out_path.begin(), out_path.end(), -1), out_path.end());
-	world.send(0, 0, out);
-	world.send(0, 0, out_path);
+    world.send(0, 0, out);
+    world.send(0, 0, out_path);
   }
   if (world.rank() == _sender) {
     std::vector<int> exp_path{0, 1};
-	world.recv(_target, 0, out);
-	world.recv(_target, 0, out_path);
-	ASSERT_EQ(_data, out);
-	ppc::core::Perf::print_perf_statistic(perfResults);
+    world.recv(_target, 0, out);
+    world.recv(_target, 0, out_path);
+    ASSERT_EQ(_data, out);
+    ppc::core::Perf::print_perf_statistic(perfResults);
   }
 }

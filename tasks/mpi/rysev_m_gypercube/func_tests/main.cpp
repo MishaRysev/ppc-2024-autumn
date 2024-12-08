@@ -9,11 +9,11 @@
 
 TEST(rysev_m_gypercube, data_transfer_0_to_1) {
   boost::mpi::communicator world;
-  
+
   if ((world.size() & (world.size() - 1)) != 0) {
     GTEST_SKIP();
   }
-  
+
   int _data = 10;
   int _sender = 0;
   int _target = 1;
@@ -39,29 +39,29 @@ TEST(rysev_m_gypercube, data_transfer_0_to_1) {
   task.pre_processing();
   task.run();
   task.post_processing();
-  world.barrier();
-  
+
   if (world.rank() == _target) {
     out_path.erase(std::remove(out_path.begin(), out_path.end(), -1), out_path.end());
-	world.send(_sender, 0, out);
-	world.send(_sender, 0, out_path);
+    world.send(_sender, 0, out);
+    world.send(_sender, 0, out_path);
   }
   if (world.rank() == _sender) {
-	std::vector<int> exp_path{0, 1};
-	world.recv(_target, 0, out);
-	world.recv(_target, 0, out_path);
+    std::vector<int> exp_path{0, 1};
+    world.recv(_target, 0, out);
+    world.recv(_target, 0, out_path);
     ASSERT_EQ(_data, out);
     ASSERT_EQ(exp_path, out_path);
   }
+  std::cout << world.rank() << std::endl;
 }
 
 TEST(rysev_m_gypercube, data_transfer_1_to_3) {
   boost::mpi::communicator world;
-  
-  if ((world.size() & (world.size() - 1)) != 0) {
+
+  if ((world.size() & (world.size() - 1)) != 0 && log2(world.size()) < 2) {
     GTEST_SKIP();
   }
-  
+
   int _data = 10;
   int _sender = 1;
   int _target = 3;
@@ -87,29 +87,29 @@ TEST(rysev_m_gypercube, data_transfer_1_to_3) {
   task.pre_processing();
   task.run();
   task.post_processing();
-  world.barrier();
-  
+
   if (world.rank() == _target) {
     out_path.erase(std::remove(out_path.begin(), out_path.end(), -1), out_path.end());
-	world.send(_sender, 0, out);
-	world.send(_sender, 0, out_path);
+    world.send(_sender, 0, out);
+    world.send(_sender, 0, out_path);
   }
   if (world.rank() == _sender) {
-	std::vector<int> exp_path{1, 3};
-	world.recv(_target, 0, out);
-	world.recv(_target, 0, out_path);
+    std::vector<int> exp_path{1, 3};
+    world.recv(_target, 0, out);
+    world.recv(_target, 0, out_path);
     ASSERT_EQ(_data, out);
     ASSERT_EQ(exp_path, out_path);
   }
+  std::cout << world.rank() << std::endl;
 }
 
 TEST(rysev_m_gypercube, data_transfer_3_to_0) {
   boost::mpi::communicator world;
-  
-  if ((world.size() & (world.size() - 1)) != 0) {
+
+  if ((world.size() & (world.size() - 1)) != 0 && log2(world.size() < 2)) {
     GTEST_SKIP();
   }
-  
+
   int _data = 10;
   int _sender = 3;
   int _target = 0;
@@ -135,29 +135,29 @@ TEST(rysev_m_gypercube, data_transfer_3_to_0) {
   task.pre_processing();
   task.run();
   task.post_processing();
-  world.barrier();
-  
+
   if (world.rank() == _target) {
     out_path.erase(remove(out_path.begin(), out_path.end(), -1), out_path.end());
-	world.send(_sender, 0, out);
-	world.send(_sender, 0, out_path);
+    world.send(_sender, 0, out);
+    world.send(_sender, 0, out_path);
   }
   if (world.rank() == _sender) {
-	std::vector<int> exp_path{3, 1, 0};
-	world.recv(_target, 0, out);
-	world.recv(_target, 0, out_path);
+    std::vector<int> exp_path{3, 1, 0};
+    world.recv(_target, 0, out);
+    world.recv(_target, 0, out_path);
     ASSERT_EQ(_data, out);
     ASSERT_EQ(exp_path, out_path);
   }
+  std::cout << world.rank() << std::endl;
 }
 
 TEST(rysev_m_gypercube, data_transfer_0_to_3) {
   boost::mpi::communicator world;
-  
-  if ((world.size() & (world.size() - 1)) != 0) {
+
+  if ((world.size() & (world.size() - 1)) != 0 && log2(world,size()) < 2) {
     GTEST_SKIP();
   }
-  
+
   int _data = 10;
   int _sender = 0;
   int _target = 3;
@@ -183,29 +183,29 @@ TEST(rysev_m_gypercube, data_transfer_0_to_3) {
   task.pre_processing();
   task.run();
   task.post_processing();
-  world.barrier();
-  
+
   if (world.rank() == _target) {
     out_path.erase(std::remove(out_path.begin(), out_path.end(), -1), out_path.end());
-	world.send(_sender, 0, out);
-	world.send(_sender, 0, out_path);
+    world.send(_sender, 0, out);
+    world.send(_sender, 0, out_path);
   }
   if (world.rank() == _sender) {
-	std::vector<int> exp_path{0, 1, 3};
-	world.recv(_target, 0, out);
-	world.recv(_target, 0, out_path);
+    std::vector<int> exp_path{0, 1, 3};
+    world.recv(_target, 0, out);
+    world.recv(_target, 0, out_path);
     ASSERT_EQ(_data, out);
     ASSERT_EQ(exp_path, out_path);
   }
+  std::cout << world.rank() << std::endl;
 }
 
 TEST(rysev_m_gypercube, data_transfer_0_to_7) {
   boost::mpi::communicator world;
-  
-  if (log2(world.size()) != 3) {
+
+  if ((world.size() & (world.size() - 1)) != 0 && log2(world.size()) < 3) {
     GTEST_SKIP();
   }
-  
+
   int _data = 10;
   int _sender = 0;
   int _target = 7;
@@ -231,18 +231,18 @@ TEST(rysev_m_gypercube, data_transfer_0_to_7) {
   task.pre_processing();
   task.run();
   task.post_processing();
-  world.barrier();
-  
+
   if (world.rank() == _target) {
     out_path.erase(std::remove(out_path.begin(), out_path.end(), -1), out_path.end());
-	world.send(_sender, 0, out);
-	world.send(_sender, 0, out_path);
+    world.send(_sender, 0, out);
+    world.send(_sender, 0, out_path);
   }
   if (world.rank() == _sender) {
-	std::vector<int> exp_path{0, 1, 3, 7};
-	world.recv(_target, 0, out);
-	world.recv(_target, 0, out_path);
+    std::vector<int> exp_path{0, 1, 3, 7};
+    world.recv(_target, 0, out);
+    world.recv(_target, 0, out_path);
     ASSERT_EQ(_data, out);
     ASSERT_EQ(exp_path, out_path);
   }
+  std::cout << world.rank() << std::endl;
 }
