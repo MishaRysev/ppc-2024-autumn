@@ -9,17 +9,31 @@
 
 TEST(rysev_m_gypercube, test_pipeline_run) {
   boost::mpi::communicator world;
-  std::vector<uint8_t> in(10000);
-  std::vector<uint8_t> out(10000);
-  for (size_t i = 0; i < in.size(); i++) {
-    in[i] = i % 256;
+
+  if ((world.size() & (world.size() - 1)) != 0) {
+    GTEST_SKIP();
   }
 
+  int _data = 10;
+  int _sender = 0;
+  int _target = 1;
+  int out = -1;
+  std::vector<int> out_path(std::log2(world.size()) + 1, -1);
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  taskDataPar->inputs_count.emplace_back(in.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  taskDataPar->outputs_count.emplace_back(out.size());
+  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&_sender));
+  taskDataPar->inputs_count.emplace_back(1);
+  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&_target));
+  taskDataPar->inputs_count.emplace_back(1);
+  if (world.rank() == _sender) {
+    taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&_data));
+    taskDataPar->inputs_count.emplace_back(1);
+  }
+  if (world.rank() == _target) {
+    taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out));
+    taskDataPar->outputs_count.emplace_back(1);
+    taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_path.data()));
+    taskDataPar->outputs_count.emplace_back(out_path.size());
+  }
 
   auto testParTask = std::make_shared<rysev_m_gypercube::GyperCube>(taskDataPar);
   ASSERT_TRUE(testParTask->validation());
@@ -34,26 +48,47 @@ TEST(rysev_m_gypercube, test_pipeline_run) {
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
   auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testParTask);
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
-
-  for (size_t i = 0; i < out.size(); i++) {
-    ASSERT_EQ(out[i], in[i]);
+  if (world.rank() == _target) {
+    out_path.erase(std::remove(out_path.begin(), out_path.end(), -1), out_path.end());
+	world.send(0, 0, out);
+	world.send(0, 0, out_path);
   }
-  ppc::core::Perf::print_perf_statistic(perfResults);
+  if (world.rank() == _sender) {
+    std::vector<int> exp_path{0, 1};
+	world.recv(_target, 0, out);
+	world.recv(_target, 0, out_path);
+	ASSERT_EQ(_data, out);
+	ppc::core::Perf::print_perf_statistic(perfResults);
+  }
 }
 
 TEST(rysev_m_gypercube, test_task_run) {
   boost::mpi::communicator world;
-  std::vector<uint8_t> in(10000);
-  std::vector<uint8_t> out(10000);
-  for (size_t i = 0; i < in.size(); i++) {
-    in[i] = i % 256;
+
+  if ((world.size() & (world.size() - 1)) != 0) {
+    GTEST_SKIP();
   }
 
+  int _data = 10;
+  int _sender = 0;
+  int _target = 1;
+  int out = -1;
+  std::vector<int> out_path(std::log2(world.size()) + 1, -1);
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  taskDataPar->inputs_count.emplace_back(in.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  taskDataPar->outputs_count.emplace_back(out.size());
+  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&_sender));
+  taskDataPar->inputs_count.emplace_back(1);
+  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&_target));
+  taskDataPar->inputs_count.emplace_back(1);
+  if (world.rank() == _sender) {
+    taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&_data));
+    taskDataPar->inputs_count.emplace_back(1);
+  }
+  if (world.rank() == _target) {
+    taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out));
+    taskDataPar->outputs_count.emplace_back(1);
+    taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_path.data()));
+    taskDataPar->outputs_count.emplace_back(out_path.size());
+  }
 
   auto testParTask = std::make_shared<rysev_m_gypercube::GyperCube>(taskDataPar);
   ASSERT_TRUE(testParTask->validation());
@@ -68,9 +103,16 @@ TEST(rysev_m_gypercube, test_task_run) {
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
   auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testParTask);
   perfAnalyzer->task_run(perfAttr, perfResults);
-
-  for (size_t i = 0; i < out.size(); i++) {
-    ASSERT_EQ(out[i], in[i]);
+  if (world.rank() == _target) {
+    out_path.erase(std::remove(out_path.begin(), out_path.end(), -1), out_path.end());
+	world.send(0, 0, out);
+	world.send(0, 0, out_path);
   }
-  ppc::core::Perf::print_perf_statistic(perfResults);
+  if (world.rank() == _sender) {
+    std::vector<int> exp_path{0, 1};
+	world.recv(_target, 0, out);
+	world.recv(_target, 0, out_path);
+	ASSERT_EQ(_data, out);
+	ppc::core::Perf::print_perf_statistic(perfResults);
+  }
 }

@@ -3,8 +3,11 @@
 
 #include <gtest/gtest.h>
 
+#include <algorithm>
 #include <boost/mpi/collectives.hpp>
 #include <boost/mpi/communicator.hpp>
+#include <boost/serialization/serialization.hpp>
+#include <boost/serialization/vector.hpp>
 #include <memory>
 #include <numeric>
 #include <string>
@@ -22,9 +25,15 @@ class GyperCube : public ppc::core::Task {
   bool validation() override;
   bool run() override;
   bool post_processing() override;
+  int Next(int c_node, int _target);
 
  private:
   boost::mpi::communicator world;
+  int data;
+  int sender;
+  int target;
+  std::vector<int> path;
+  bool done;
 };
 
 }  // namespace rysev_m_gypercube
