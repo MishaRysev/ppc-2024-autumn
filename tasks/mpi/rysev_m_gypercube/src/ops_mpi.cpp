@@ -7,8 +7,7 @@
 #include <random>
 #include <string>
 #include <thread>
-#include <vector>
-#include <typeinfo>
+
 using namespace std::chrono_literals;
 
 int rysev_m_gypercube::GyperCube::Next(int c_node, int _target) {
@@ -34,7 +33,8 @@ bool rysev_m_gypercube::GyperCube::validation() {
   if (world.rank() == 0) {
     int size = world.size();
     if (size < 2 || (size & (size - 1)) != 0) return false;
-    if (*reinterpret_cast<int *>(taskData->inputs[0]) >= size || *reinterpret_cast<int *>(taskData->inputs[0]) < 0) return false;
+    if (*reinterpret_cast<int *>(taskData->inputs[0]) >= size || *reinterpret_cast<int *>(taskData->inputs[0]) < 0) 
+      return false;
   }
   return true;
 }
@@ -44,7 +44,7 @@ bool rysev_m_gypercube::GyperCube::run() {
   int size = world.size();
   if (world.rank() == sender) {
     path.push_back(world.rank());
-	if (world.rank() != target) {
+    if (world.rank() != target) {
       int next = Next(world.rank(), target);
       world.send(next, 0, done);
       world.send(next, 0, data);
@@ -52,7 +52,8 @@ bool rysev_m_gypercube::GyperCube::run() {
       world.recv(target, 0, path);
       world.recv(target, 0, done);
     }
-    else return true;
+    else 
+      return true;
     for (int i = 0; i < size; i++) {
       if (i != sender && std::find(path.begin(), path.end(), i) == path.end()) {
         world.send(i, 0, done);
@@ -84,7 +85,7 @@ bool rysev_m_gypercube::GyperCube::post_processing() {
   world.barrier();
   if (world.rank() == target) {
     *reinterpret_cast<int *>(taskData->outputs[0]) = data;
-    int* p = reinterpret_cast<int *>(taskData->outputs[1]);
+    int *p = reinterpret_cast<int *>(taskData->outputs[1]);
     std::copy(path.begin(), path.end(), p);
   }
   return true;
