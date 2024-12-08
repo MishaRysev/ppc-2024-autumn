@@ -45,47 +45,47 @@ bool rysev_m_gypercube::GyperCube::run() {
   if (world.rank() == sender) {
     path.push_back(world.rank());
 	if (world.rank() != target) {
-	  int next = Next(world.rank(), target);
-	  world.send(next, 0, done);
-	  world.send(next, 0, data);
-	  world.send(next, 0, path);
-	  world.recv(target, 0, path);
-	  world.recv(target, 0, done);
+      int next = Next(world.rank(), target);
+      world.send(next, 0, done);
+      world.send(next, 0, data);
+      world.send(next, 0, path);
+      world.recv(target, 0, path);
+      world.recv(target, 0, done);
     }
-	else return true;
+    else return true;
     for (int i = 0; i < size; i++) {
       if (i != sender && std::find(path.begin(), path.end(), i) == path.end()) {
-	    world.send(i, 0, done);
-	  }
-	}
+        world.send(i, 0, done);
+      }
+    }
   } else {
-	world.recv(boost::mpi::any_source, 0, done);
+    world.recv(boost::mpi::any_source, 0, done);
     if (!done) {
       world.recv(boost::mpi::any_source, 0, data);
       world.recv(boost::mpi::any_source, 0, path);
       path.push_back(world.rank());
-	  if (world.rank() == target) {
-		done = true;
+      if (world.rank() == target) {
+        done = true;
         world.send(sender, 0, path);
-		world.send(sender, 0, done);
-	  } else {
+        world.send(sender, 0, done);
+      } else {
         int next = Next(world.rank(), target);
-		world.send(next, 0, done);
-	    world.send(next, 0, data);
-	    world.send(next, 0, path);
+        world.send(next, 0, done);
+        world.send(next, 0, data);
+        world.send(next, 0, path);
       }
-	}
+    }
   }
-  world.barrier();
   return true;
 }
 
 bool rysev_m_gypercube::GyperCube::post_processing() {
   internal_order_test();
+  world.barrier();
   if (world.rank() == target) {
-	*reinterpret_cast<int *>(taskData->outputs[0]) = data;
-	int* p = reinterpret_cast<int *>(taskData->outputs[1]);
-	std::copy(path.begin(), path.end(), p);
+    *reinterpret_cast<int *>(taskData->outputs[0]) = data;
+    int* p = reinterpret_cast<int *>(taskData->outputs[1]);
+    std::copy(path.begin(), path.end(), p);
   }
   return true;
 }
