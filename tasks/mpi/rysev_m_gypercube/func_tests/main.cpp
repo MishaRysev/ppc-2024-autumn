@@ -10,7 +10,7 @@
 TEST(rysev_m_gypercube, data_transfer_0_to_1) {
   boost::mpi::communicator world;
 
-  if ((world.size() & (world.size() - 1)) != 0) {
+  if (world.size() < 2 || (world.size() & (world.size() - 1)) != 0) {
     GTEST_SKIP();
   }
 
@@ -58,7 +58,7 @@ TEST(rysev_m_gypercube, data_transfer_0_to_1) {
 TEST(rysev_m_gypercube, data_transfer_1_to_3) {
   boost::mpi::communicator world;
 
-  if ((world.size() & (world.size() - 1)) != 0 && log2(world.size()) < 2) {
+  if ((world.size() & (world.size() - 1)) != 0 || log2(world.size()) < 2) {
     GTEST_SKIP();
   }
 
@@ -106,7 +106,7 @@ TEST(rysev_m_gypercube, data_transfer_1_to_3) {
 TEST(rysev_m_gypercube, data_transfer_3_to_0) {
   boost::mpi::communicator world;
 
-  if ((world.size() & (world.size() - 1)) != 0 && log2(world.size()) < 2) {
+  if ((world.size() & (world.size() - 1)) != 0 || log2(world.size()) < 2) {
     GTEST_SKIP();
   }
 
@@ -153,7 +153,7 @@ TEST(rysev_m_gypercube, data_transfer_3_to_0) {
 TEST(rysev_m_gypercube, data_transfer_0_to_3) {
   boost::mpi::communicator world;
 
-  if ((world.size() & (world.size() - 1)) != 0 && log2(world.size()) < 2) {
+  if ((world.size() & (world.size() - 1)) != 0 || log2(world.size()) < 2) {
     GTEST_SKIP();
   }
 
