@@ -33,7 +33,7 @@ bool rysev_m_gypercube::GyperCube::validation() {
   if (world.rank() == 0) {
     int size = world.size();
     if (size < 2 || (size & (size - 1)) != 0) return false;
-    if (*reinterpret_cast<int *>(taskData->inputs[0]) >= size || *reinterpret_cast<int *>(taskData->inputs[0]) < 0) 
+    if (*reinterpret_cast<int *>(taskData->inputs[0]) >= size || *reinterpret_cast<int *>(taskData->inputs[0]) < 0)
       return false;
   }
   return true;
@@ -52,7 +52,7 @@ bool rysev_m_gypercube::GyperCube::run() {
       world.recv(target, 0, path);
       world.recv(target, 0, done);
     }
-    else 
+    else
       return true;
     for (int i = 0; i < size; i++) {
       if (i != sender && std::find(path.begin(), path.end(), i) == path.end()) {
@@ -79,7 +79,6 @@ bool rysev_m_gypercube::GyperCube::run() {
   }
   return true;
 }
-
 bool rysev_m_gypercube::GyperCube::post_processing() {
   internal_order_test();
   world.barrier();
