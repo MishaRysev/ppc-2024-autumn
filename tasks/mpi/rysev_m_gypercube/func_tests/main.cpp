@@ -52,7 +52,7 @@ TEST(rysev_m_gypercube, data_transfer_0_to_1) {
     ASSERT_EQ(_data, out);
     ASSERT_EQ(exp_path, out_path);
   }
-  std::cout << "TEST #1 " << world.rank() << std::endl;
+  std::cout << "TEST #1 " << world.rank() << "/" << world.size() - 1 << std::endl;
 }
 
 TEST(rysev_m_gypercube, data_transfer_1_to_3) {
@@ -100,7 +100,7 @@ TEST(rysev_m_gypercube, data_transfer_1_to_3) {
     ASSERT_EQ(_data, out);
     ASSERT_EQ(exp_path, out_path);
   }
-  std::cout << world.rank() << std::endl;
+  std::cout << "TEST #2" << world.rank() << "/" << word.size() - 1<< std::endl;
 }
 
 TEST(rysev_m_gypercube, data_transfer_3_to_0) {
@@ -148,7 +148,7 @@ TEST(rysev_m_gypercube, data_transfer_3_to_0) {
     ASSERT_EQ(_data, out);
     ASSERT_EQ(exp_path, out_path);
   }
-  std::cout << "TEST #2 " << world.rank() << std::endl;
+  std::cout << "TEST #3 " << world.rank() << "/" << world.size() - 1 << std::endl;
 }
 
 TEST(rysev_m_gypercube, data_transfer_0_to_3) {
@@ -196,7 +196,7 @@ TEST(rysev_m_gypercube, data_transfer_0_to_3) {
     ASSERT_EQ(_data, out);
     ASSERT_EQ(exp_path, out_path);
   }
-  std::cout << "TEST #3 " << world.rank() << std::endl;
+  std::cout << "TEST #4 " << world.rank() << "/" << world.size() - 1 << std::endl;
 }
 
 TEST(rysev_m_gypercube, data_transfer_0_to_7) {
@@ -244,5 +244,5 @@ TEST(rysev_m_gypercube, data_transfer_0_to_7) {
     ASSERT_EQ(_data, out);
     ASSERT_EQ(exp_path, out_path);
   }
-  std::cout << "TEST #4 " << world.rank() << std::endl;
+  std::cout << "TEST #5 " << world.rank() << "/" << world.size() - 1 << std::endl;
 }
