@@ -100,7 +100,7 @@ TEST(rysev_m_gypercube, data_transfer_1_to_3) {
     ASSERT_EQ(_data, out);
     ASSERT_EQ(exp_path, out_path);
   }
-  std::cout << "TEST #2" << world.rank() << "/" << world.size() - 1<< std::endl;
+  std::cout << "TEST #2" << world.rank() << "/" << world.size() - 1 << std::endl;
 }
 
 TEST(rysev_m_gypercube, data_transfer_3_to_0) {
