@@ -51,9 +51,9 @@ bool rysev_m_gypercube::GyperCube::run() {
       world.send(next, 0, path);
       world.recv(target, 0, path);
       world.recv(target, 0, done);
-    }
-    else
+    } else {
       return true;
+    }
     for (int i = 0; i < size; i++) {
       if (i != sender && std::find(path.begin(), path.end(), i) == path.end()) {
         world.send(i, 0, done);
@@ -79,6 +79,7 @@ bool rysev_m_gypercube::GyperCube::run() {
   }
   return true;
 }
+
 bool rysev_m_gypercube::GyperCube::post_processing() {
   internal_order_test();
   world.barrier();
@@ -89,4 +90,3 @@ bool rysev_m_gypercube::GyperCube::post_processing() {
   }
   return true;
 }
-
